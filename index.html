@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equalizer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .mixing-table {
+    background-color: #333;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    width: 400px;
+  }
+  .slider-container {
+    margin-bottom: 20px;
+  }
+  .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #666, #888);
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  .slider:hover {
+    opacity: 1;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 40px;
+    border-radius: 5px;
+    background: #4caf50;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 2px solid #333;
+  }
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 40px;
+    border-radius: 5px;
+    background: #4caf50;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 2px solid #333;
+  }
+  .label {
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .select-container {
+    margin-bottom: 20px;
+  }
+  .select {
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #666;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="mixing-table">
+  <div class="select-container">
+    <div class="label">Input Device</div>
+    <select class="select" id="inputDeviceSelect"></select>
+  </div>
+
+  <div class="select-container">
+    <div class="label">Output Device</div>
+    <select class="select" id="outputDeviceSelect"></select>
+  </div>
+
+  <div class="slider-container">
+    <div class="label">Bass</div>
+    <input type="range" min="0" max="100" value="50" class="slider" id="bassSlider">
+  </div>
+
+  <div class="slider-container">
+    <div class="label">Low Mid</div>
+    <input type="range" min="0" max="100" value="50" class="slider" id="lowMidSlider">
+  </div>
+
+  <div class="slider-container">
+    <div class="label">Mid</div>
+    <input type="range" min="0" max="100" value="50" class="slider" id="midSlider">
+  </div>
+
+  <div class="slider-container">
+    <div class="label">High Mid</div>
+    <input type="range" min="0" max="100" value="50" class="slider" id="highMidSlider">
+  </div>
+
+  <div class="slider-container">
+    <div class="label">Treble</div>
+    <input type="range" min="0" max="100" value="50" class="slider" id="trebleSlider">
+  </div>
+</div>
+
+<script>
+  // Fetch available audio devices and populate the select elements
+  navigator.mediaDevices.enumerateDevices().then(devices => {
+    const inputDeviceSelect = document.getElementById("inputDeviceSelect");
+    const outputDeviceSelect = document.getElementById("outputDeviceSelect");
+
+    devices.forEach(device => {
+      const option = document.createElement("option");
+      option.value = device.deviceId;
+      option.text = device.label || `${device.kind} ${device.deviceId}`;
+      
+      if (device.kind === 'audioinput') {
+        inputDeviceSelect.appendChild(option);
+      } else if (device.kind === 'audiooutput') {
+        outputDeviceSelect.appendChild(option);
+      }
+    });
+  });
+
+  const bassSlider = document.getElementById("bassSlider");
+  const lowMidSlider = document.getElementById("lowMidSlider");
+  const midSlider = document.getElementById("midSlider");
+  const highMidSlider = document.getElementById("highMidSlider");
+  const trebleSlider = document.getElementById("trebleSlider");
+
+  function updateEqualizer() {
+    const bassValue = parseInt(bassSlider.value);
+    const lowMidValue = parseInt(lowMidSlider.value);
+    const midValue = parseInt(midSlider.value);
+    const highMidValue = parseInt(highMidSlider.value);
+    const trebleValue = parseInt(trebleSlider.value);
+
+    // You can implement the equalizer logic here, such as adjusting audio frequencies based on slider values.
+    console.log("Bass:", bassValue, "Low Mid:", lowMidValue, "Mid:", midValue, "High Mid:", highMidValue, "Treble:", trebleValue);
+  }
+
+  // Add event listeners to sliders
+  bassSlider.addEventListener("input", updateEqualizer);
+  lowMidSlider.addEventListener("input", updateEqualizer);
+  midSlider.addEventListener("input", updateEqualizer);
+  highMidSlider.addEventListener("input", updateEqualizer);
+  trebleSlider.addEventListener("input", updateEqualizer);
+</script>
+
+</body>
+</html>
